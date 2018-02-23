@@ -7,15 +7,13 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package.json /usr/src/app/
-RUN npm install
-
+RUN npm install --production
+RUN npm install pm2 -g
 # Copy app
 COPY . /usr/src/app
 
-COPY init_container.sh /bin/
-RUN chmod 755 /bin/init_container.sh
 
 # Expose for api
 EXPOSE 3000
 
-CMD ["/bin/init_container.sh"]
+CMD [ "pm2-docker", "start", "pm2.json"]
